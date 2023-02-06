@@ -16,6 +16,7 @@ import { useStore } from '@/vuex'
 export default {
   name: 'App',
   setup() {
+    // vue3有个compositionAPI的入口
     const store = useStore()
     function add() {
       store.commit('add', 1)

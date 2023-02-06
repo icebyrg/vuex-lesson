@@ -15,8 +15,10 @@ class Module {
 
 class moduleCollection {
   constructor(rootModule) {
+    // vuex3内部会创造一个vue的实例 但是vuex4直接采用vue3提供的响应式方法
     this.root = null
     this.register(rootModule, [])
+    // vuex里面有一个比较重要的api replaceState
   }
   register(rawModule, path) {
     const newModule = new Module(rawModule)
@@ -34,13 +36,16 @@ class moduleCollection {
     console.log(this.root)
   }
 }
+
 export default class Store {
   constructor(options) {
     this._modules = new moduleCollection()
   }
   install(app, injectKey) {
-    app.provide(injectKey || storeKey, this)
-    app.config.globalProperties.$store = this
+    // createApp().use(store, 'my')
+    // 全局暴露一个变量 暴露的是store的实例
+    app.provide(injectKey || storeKey, this) // 给根app增加一个_provides 子组件会去向上查找
+    app.config.globalProperties.$store = this // 增添$store属性
   }
 }
 
